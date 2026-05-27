@@ -4,9 +4,9 @@ import type { Milestone } from "@/constants/mock-data/project-progress";
 export function ProgressTimeline({ milestones }: { milestones: Milestone[] }) {
     return (
         <div>
-            <h3 className="mb-6 text-xs font-semibold uppercase tracking-widest text-white/30">
+            <p className="mb-6 text-[10px] font-semibold uppercase tracking-widest text-white/25">
                 Project Milestones
-            </h3>
+            </p>
             <ol className="space-y-0">
                 {milestones.map((m, i) => (
                     <MilestoneItem key={m.id} milestone={m} isLast={i === milestones.length - 1} />

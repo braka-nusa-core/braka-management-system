@@ -10,7 +10,6 @@ function formatDate(d: string) {
 export function ProgressHeader({ project }: { project: ProgressProject }) {
     return (
         <div className="space-y-8">
-            {/* Brand */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#A3E635] shadow-[0_0_16px_rgba(163,230,53,0.3)]">
@@ -23,7 +22,6 @@ export function ProgressHeader({ project }: { project: ProgressProject }) {
                 </span>
             </div>
 
-            {/* Title */}
             <div className="space-y-4">
                 <div>
                     <ProgressStatusBadge status={project.status} size="md" />
@@ -31,35 +29,27 @@ export function ProgressHeader({ project }: { project: ProgressProject }) {
                         {project.projectName}
                     </h1>
                 </div>
-
                 <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/40">
                     <span className="flex items-center gap-1.5">
                         <User size={13} className="shrink-0" />
-                        {project.clientName}
-                        <span className="text-white/20">·</span>
-                        {project.clientPic}
+                        {project.clientName} · {project.clientPic}
                     </span>
                     <span className="flex items-center gap-1.5">
                         <Calendar size={13} className="shrink-0" />
                         Est. {formatDate(project.estimatedCompletion)}
                     </span>
                 </div>
-
                 {project.description && (
                     <p className="max-w-xl text-sm leading-relaxed text-white/35">{project.description}</p>
                 )}
             </div>
 
-            {/* Progress card */}
             <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm">
                 <ProgressBar value={project.progress} showLabel size="lg" animated />
                 <div className="mt-4 flex items-center justify-between">
-                    <p className="text-xs text-white/25">
-                        Last updated: {formatDate(project.lastUpdated)}
-                    </p>
+                    <p className="text-xs text-white/25">Last updated: {formatDate(project.lastUpdated)}</p>
                     <div className="flex items-center gap-1 text-xs text-white/20">
-                        <ExternalLink size={10} />
-                        braka.co.id
+                        <ExternalLink size={10} /> braka.co.id
                     </div>
                 </div>
             </div>

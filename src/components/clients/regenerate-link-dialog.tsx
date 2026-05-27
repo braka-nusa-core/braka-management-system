@@ -27,13 +27,11 @@ export function RegenerateLinkDialog({ open, onClose, onConfirm }: RegenerateLin
                         will lose access. A new link will be generated.
                     </DialogDescription>
                 </DialogHeader>
-
                 <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-4 py-3">
                     <p className="text-xs text-amber-400/80">
                         ⚠ The old link cannot be recovered after regeneration.
                     </p>
                 </div>
-
                 <DialogFooter className="gap-2">
                     <Button variant="outline" onClick={onClose}>Cancel</Button>
                     <Button

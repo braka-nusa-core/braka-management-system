@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/components/auth/auth-provider";
 import {
   LayoutDashboard, Users, Wrench,
-  FileText, Bell, Settings, X,
+  FileText, Bell, Settings, X, BarChart2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, APP_NAME } from "@/constants/navigation";
@@ -18,6 +17,7 @@ const ICON_MAP = {
   FileText,
   Bell,
   Settings,
+  BarChart2,
 } as const;
 
 interface SidebarProps {
@@ -27,13 +27,10 @@ interface SidebarProps {
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const { user } = useAuth();
   const unreadCount = NOTIFICATIONS_DATA.filter((n) => !n.read).length;
-  const initials = user?.name?.trim().charAt(0).toUpperCase() ?? "A";
 
   return (
     <>
-      {/* Mobile overlay */}
       {open && (
         <div
           className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
@@ -41,15 +38,13 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         />
       )}
 
-      <aside
-        className={cn(
-          "fixed left-0 top-0 z-50 flex h-full w-[240px] flex-col",
-          "border-r border-white/[0.06] bg-[#09090B]",
-          "transition-transform duration-300 ease-in-out",
-          "lg:translate-x-0 lg:static lg:z-auto",
-          open ? "translate-x-0" : "-translate-x-full"
-        )}
-      >
+      <aside className={cn(
+        "fixed left-0 top-0 z-50 flex h-full w-[240px] flex-col",
+        "border-r border-white/[0.06] bg-[#09090B]",
+        "transition-transform duration-300 ease-in-out",
+        "lg:translate-x-0 lg:static lg:z-auto",
+        open ? "translate-x-0" : "-translate-x-full"
+      )}>
         {/* Logo */}
         <div className="flex h-[60px] shrink-0 items-center justify-between border-b border-white/[0.06] px-5">
           <div className="flex items-center gap-2.5">
@@ -94,22 +89,17 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                         : "text-[#A1A1AA] hover:bg-[#18181B] hover:text-[#F4F4F5]"
                     )}
                   >
-                    <Icon
-                      size={16}
-                      className={cn(
-                        "shrink-0 transition-colors",
-                        isActive ? "text-[#A3E635]" : "text-[#A1A1AA] group-hover:text-[#F4F4F5]"
-                      )}
-                    />
+                    <Icon size={16} className={cn(
+                      "shrink-0 transition-colors",
+                      isActive ? "text-[#A3E635]" : "text-[#A1A1AA] group-hover:text-[#F4F4F5]"
+                    )} />
                     <span className="flex-1">{item.label}</span>
                     {isBell && unreadCount > 0 && (
                       <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#A3E635] px-1 text-[10px] font-bold text-[#09090B]">
                         {unreadCount}
                       </span>
                     )}
-                    {isActive && (
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#A3E635]" />
-                    )}
+                    {isActive && <span className="h-1.5 w-1.5 rounded-full bg-[#A3E635]" />}
                   </Link>
                 </li>
               );
@@ -121,15 +111,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         <div className="shrink-0 border-t border-white/[0.06] p-4">
           <div className="flex items-center gap-3 rounded-lg bg-[#18181B] px-3 py-2.5">
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#A3E635]/20 text-xs font-bold text-[#A3E635]">
-              {initials}
+              A
             </div>
             <div className="min-w-0">
-              <p className="truncate text-xs font-medium text-[#F4F4F5]">
-                {user?.name ?? "Admin"}
-              </p>
-              <p className="truncate text-[10px] text-[#A1A1AA]">
-                {user?.email ?? "admin@braka.co.id"}
-              </p>
+              <p className="truncate text-xs font-medium text-[#F4F4F5]">Admin</p>
+              <p className="truncate text-[10px] text-[#A1A1AA]">admin@braka.co.id</p>
             </div>
           </div>
         </div>

@@ -8,7 +8,13 @@ interface ProgressBarProps {
     animated?: boolean;
 }
 
-export function ProgressBar({ value, showLabel = true, size = "md", className, animated = true }: ProgressBarProps) {
+export function ProgressBar({
+    value,
+    showLabel = true,
+    size = "md",
+    className,
+    animated = true,
+}: ProgressBarProps) {
     const clamped = Math.min(100, Math.max(0, value));
     const isComplete = clamped === 100;
     const heightClass = size === "lg" ? "h-2.5" : size === "sm" ? "h-1.5" : "h-2";
@@ -28,9 +34,9 @@ export function ProgressBar({ value, showLabel = true, size = "md", className, a
                     className={cn(
                         "h-full rounded-full",
                         isComplete ? "bg-emerald-400" : "bg-gradient-to-r from-[#A3E635] to-[#84cc16]",
-                        animated && "progress-fill"
+                        animated && "transition-all duration-700"
                     )}
-                    style={{ width: `${clamped}%`, animationDuration: "1s" }}
+                    style={{ width: `${clamped}%` }}
                 />
             </div>
         </div>

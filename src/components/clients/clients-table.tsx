@@ -3,26 +3,38 @@
 import { useState } from "react";
 import { Eye, Pencil, Trash2, MoreHorizontal, UserPlus } from "lucide-react";
 import Link from "next/link";
-import { CLIENTS } from "@/constants/mock-data/clients";
 import { ClientStatusBadge } from "./client-status-badge";
 import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/shared/search-input";
 import { SortHeader } from "@/components/shared/sort-header";
 import { useTableSort } from "@/hooks/use-table-sort";
 import { EmptyState } from "@/components/shared/empty-state";
+import type { Client } from "@/types/client";
 
 interface ClientsTableProps {
+    clients: Client[];
+    totalClients: number;
+    isLoading?: boolean;
+    errorMessage?: string | null;
     onAdd: () => void;
     onEdit: (id: string) => void;
     onDelete: (id: string) => void;
 }
 
-export function ClientsTable({ onAdd, onEdit, onDelete }: ClientsTableProps) {
+export function ClientsTable({
+    clients,
+    totalClients,
+    isLoading = false,
+    errorMessage,
+    onAdd,
+    onEdit,
+    onDelete,
+}: ClientsTableProps) {
     const [search, setSearch] = useState("");
     const [openMenu, setOpenMenu] = useState<string | null>(null);
     const [statusFilter, setStatusFilter] = useState<string>("all");
 
-    const filtered = CLIENTS.filter((c) => {
+    const filtered = clients.filter((c) => {
         const matchSearch = [c.companyName, c.picName, c.email].some((f) =>
             f.toLowerCase().includes(search.toLowerCase())
         );
@@ -31,6 +43,24 @@ export function ClientsTable({ onAdd, onEdit, onDelete }: ClientsTableProps) {
     });
 
     const { sorted, sort, toggleSort } = useTableSort(filtered);
+
+    if (isLoading) {
+        return (
+            <div className="rounded-xl border border-white/[0.06] bg-[#111827] p-10 text-center">
+                <p className="text-sm font-semibold text-[#F4F4F5]">Loading clients...</p>
+                <p className="mt-1 text-sm text-[#A1A1AA]">Fetching the latest client data from the API.</p>
+            </div>
+        );
+    }
+
+    if (errorMessage) {
+        return (
+            <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-5">
+                <p className="text-sm font-semibold text-red-300">Failed to load clients</p>
+                <p className="mt-1 text-sm text-red-200/80">{errorMessage}</p>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-4">
@@ -136,7 +166,7 @@ export function ClientsTable({ onAdd, onEdit, onDelete }: ClientsTableProps) {
                 </div>
 
                 <div className="border-t border-white/[0.06] px-4 py-3">
-                    <p className="text-xs text-[#A1A1AA]">Showing {sorted.length} of {CLIENTS.length} clients</p>
+                    <p className="text-xs text-[#A1A1AA]">Showing {sorted.length} of {totalClients} clients</p>
                 </div>
             </div>
         </div>

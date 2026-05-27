@@ -15,20 +15,15 @@ export default async function ProjectProgressPage({ params }: PageProps) {
 
     return (
         <div className="min-h-screen bg-[#09090B]">
-            {/* Top accent */}
             <div className="h-px w-full bg-gradient-to-r from-transparent via-[#A3E635]/40 to-transparent" />
 
             <div className="page-enter mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
-
                 <ProgressHeader project={project} />
 
-                {/* Divider */}
                 <div className="my-12 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
-                {/* Timeline */}
                 <ProgressTimeline milestones={project.milestones} />
 
-                {/* Updates */}
                 {project.updates.length > 0 && (
                     <>
                         <div className="my-12 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
@@ -38,10 +33,7 @@ export default async function ProjectProgressPage({ params }: PageProps) {
                             </p>
                             <div className="space-y-3">
                                 {project.updates.map((update, i) => (
-                                    <div
-                                        key={i}
-                                        className="flex gap-4 rounded-2xl border border-white/[0.05] bg-white/[0.02] px-5 py-4 transition-colors hover:bg-white/[0.03]"
-                                    >
+                                    <div key={i} className="flex gap-4 rounded-2xl border border-white/[0.05] bg-white/[0.02] px-5 py-4 transition-colors hover:bg-white/[0.03]">
                                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#A3E635]/10">
                                             <MessageSquare size={13} className="text-[#A3E635]" />
                                         </div>
@@ -58,7 +50,6 @@ export default async function ProjectProgressPage({ params }: PageProps) {
                     </>
                 )}
 
-                {/* Footer */}
                 <div className="mt-20 border-t border-white/[0.05] pt-8">
                     <div className="flex flex-col items-center gap-2 text-center">
                         <div className="flex items-center gap-2">

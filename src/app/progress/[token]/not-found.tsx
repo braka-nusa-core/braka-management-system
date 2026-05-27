@@ -1,9 +1,7 @@
-import Link from "next/link";
-
 export default function ProgressNotFound() {
     return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-[#09090B] px-4 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#A3E635] mb-6">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#A3E635] mb-6 shadow-[0_0_20px_rgba(163,230,53,0.3)]">
                 <span className="text-xl font-black text-[#09090B]">B</span>
             </div>
             <h1 className="text-xl font-bold text-white">Project Not Found</h1>

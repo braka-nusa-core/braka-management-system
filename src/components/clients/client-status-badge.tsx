@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { ClientStatus } from "@/constants/mock-data/clients";
+import type { ClientStatus } from "@/types/client";
 
 const CONFIG: Record<ClientStatus, { label: string; className: string }> = {
     active: { label: "Active", className: "bg-emerald-500/10 text-emerald-400" },

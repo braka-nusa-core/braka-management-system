@@ -1,6 +1,7 @@
 import { MapPin, Mail, Phone, User, Calendar, FileText } from "lucide-react";
 import { ClientStatusBadge } from "./client-status-badge";
-import type { Client, MaintenanceContract, InvoiceHistory, ProjectProgress } from "@/constants/mock-data/clients";
+import type { Client } from "@/types/client";
+import type { MaintenanceContract, InvoiceHistory, ProjectProgress } from "@/constants/mock-data/clients";
 import { cn } from "@/lib/utils";
 
 function formatRp(amount: number) {

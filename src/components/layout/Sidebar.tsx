@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import {
   LayoutDashboard, Users, Wrench,
   FileText, Bell, Settings, X, BarChart2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, APP_NAME } from "@/constants/navigation";
-import { NOTIFICATIONS_DATA } from "@/constants/mock-data/notifications";
+import { getNotifications } from "@/services";
 
 const ICON_MAP = {
   LayoutDashboard,
@@ -27,7 +28,11 @@ interface SidebarProps {
 
 export function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const unreadCount = NOTIFICATIONS_DATA.filter((n) => !n.read).length;
+  const { data } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: getNotifications,
+  });
+  const unreadCount = data?.unreadCount ?? 0;
 
   return (
     <>

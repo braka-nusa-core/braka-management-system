@@ -1,14 +1,17 @@
 import { Clock, AlertTriangle, CheckCircle2, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { NotificationType } from "@/constants/mock-data/notifications";
+import type { NotificationType } from "@/types/notification";
 
-const CONFIG: Record<NotificationType, {
-    label: string;
-    icon: React.ElementType;
-    iconCls: string;
-    bgCls: string;
-    badgeCls: string;
-}> = {
+const CONFIG: Record<
+    NotificationType,
+    {
+        label: string;
+        icon: React.ElementType;
+        iconCls: string;
+        bgCls: string;
+        badgeCls: string;
+    }
+> = {
     due_soon: {
         label: "Due Soon",
         icon: Clock,
@@ -39,21 +42,25 @@ const CONFIG: Record<NotificationType, {
     },
 };
 
-export function NotificationTypeBadge({ type }: { type: NotificationType }) {
-    const cfg = CONFIG[type];
+export function NotificationTypeIcon({ type }: { type: NotificationType }) {
+    const { icon: Icon, iconCls, bgCls } = CONFIG[type];
     return (
-        <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium", cfg.badgeCls)}>
-            {cfg.label}
-        </span>
+        <div className={cn("flex h-10 w-10 items-center justify-center rounded-xl", bgCls)}>
+            <Icon size={18} className={iconCls} />
+        </div>
     );
 }
 
-export function NotificationTypeIcon({ type, size = 16 }: { type: NotificationType; size?: number }) {
-    const cfg = CONFIG[type];
-    const Icon = cfg.icon;
+export function NotificationTypeBadge({ type }: { type: NotificationType }) {
+    const { label, badgeCls } = CONFIG[type];
     return (
-        <div className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-full", cfg.bgCls)}>
-            <Icon size={size} className={cfg.iconCls} />
-        </div>
+        <span
+            className={cn(
+                "inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium",
+                badgeCls
+            )}
+        >
+            {label}
+        </span>
     );
 }

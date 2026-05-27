@@ -2,9 +2,10 @@
 
 import { LogOut, Menu, Bell } from "lucide-react";
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
-import { NOTIFICATIONS_DATA } from "@/constants/mock-data/notifications";
+import { getNotifications } from "@/services";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -13,7 +14,11 @@ interface HeaderProps {
 
 export function Header({ onMenuClick, title = "Dashboard" }: HeaderProps) {
   const { logout, user } = useAuth();
-  const unreadCount = NOTIFICATIONS_DATA.filter((n) => !n.read).length;
+  const { data } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: getNotifications,
+  });
+  const unreadCount = data?.unreadCount ?? 0;
   const initials = user?.name?.trim().charAt(0).toUpperCase() ?? "A";
 
   return (

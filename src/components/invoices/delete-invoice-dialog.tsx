@@ -1,21 +1,39 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, LoaderCircle } from "lucide-react";
 import {
-    Dialog, DialogContent, DialogHeader,
-    DialogTitle, DialogFooter, DialogDescription,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { INVOICES } from "@/constants/mock-data/invoices";
 
 interface DeleteInvoiceDialogProps {
     open: boolean;
-    invoiceId: string | null;
+    invoiceNumber?: string | null;
     onClose: () => void;
+    onConfirm?: () => Promise<void> | void;
+    isSubmitting?: boolean;
 }
 
-export function DeleteInvoiceDialog({ open, invoiceId, onClose }: DeleteInvoiceDialogProps) {
-    const invoice = INVOICES.find((i) => i.id === invoiceId);
+export function DeleteInvoiceDialog({
+    open,
+    invoiceNumber,
+    onClose,
+    onConfirm,
+    isSubmitting = false,
+}: DeleteInvoiceDialogProps) {
+    async function handleConfirm() {
+        if (!onConfirm) {
+            onClose();
+            return;
+        }
+
+        await onConfirm();
+    }
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
@@ -27,18 +45,28 @@ export function DeleteInvoiceDialog({ open, invoiceId, onClose }: DeleteInvoiceD
                     <DialogTitle>Delete Invoice</DialogTitle>
                     <DialogDescription className="text-[#A1A1AA]">
                         Are you sure you want to delete{" "}
-                        <span className="font-semibold text-[#F4F4F5]">{invoice?.invoiceNumber}</span>
+                        <span className="font-semibold text-[#F4F4F5]">{invoiceNumber}</span>
                         ? This action cannot be undone.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="gap-2">
-                    <Button variant="outline" onClick={onClose}>Cancel</Button>
+                    <Button variant="outline" onClick={onClose} disabled={isSubmitting}>
+                        Cancel
+                    </Button>
                     <Button
                         variant="ghost"
-                        onClick={onClose}
+                        onClick={handleConfirm}
+                        disabled={isSubmitting}
                         className="border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
                     >
-                        Delete Invoice
+                        {isSubmitting ? (
+                            <>
+                                <LoaderCircle className="animate-spin" />
+                                Deleting...
+                            </>
+                        ) : (
+                            "Delete Invoice"
+                        )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

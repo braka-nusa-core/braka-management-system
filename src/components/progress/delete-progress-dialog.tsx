@@ -1,20 +1,41 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, LoaderCircle } from "lucide-react";
 import {
-    Dialog, DialogContent, DialogHeader,
-    DialogTitle, DialogFooter, DialogDescription,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogFooter,
+    DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import type { AdminProgressProject } from "@/constants/mock-data/project-progress";
+import type { ProgressAdminProject } from "@/types/progress";
 
 interface DeleteProgressDialogProps {
     open: boolean;
-    project: AdminProgressProject | null;
+    project: ProgressAdminProject | null;
     onClose: () => void;
+    onConfirm?: () => Promise<void> | void;
+    isSubmitting?: boolean;
 }
 
-export function DeleteProgressDialog({ open, project, onClose }: DeleteProgressDialogProps) {
+export function DeleteProgressDialog({
+    open,
+    project,
+    onClose,
+    onConfirm,
+    isSubmitting = false,
+}: DeleteProgressDialogProps) {
+    async function handleConfirm() {
+        if (!onConfirm) {
+            onClose();
+            return;
+        }
+
+        await onConfirm();
+    }
+
     return (
         <Dialog open={open} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[420px]">
@@ -25,18 +46,30 @@ export function DeleteProgressDialog({ open, project, onClose }: DeleteProgressD
                     <DialogTitle>Delete Progress Project</DialogTitle>
                     <DialogDescription className="text-[#A1A1AA]">
                         Are you sure you want to delete{" "}
-                        <span className="font-semibold text-[#F4F4F5]">{project?.projectName}</span>?
-                        The public link will also be invalidated. This cannot be undone.
+                        <span className="font-semibold text-[#F4F4F5]">
+                            {project?.projectName}
+                        </span>
+                        ? The public link will also be invalidated. This cannot be undone.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="gap-2">
-                    <Button variant="outline" onClick={onClose}>Cancel</Button>
+                    <Button variant="outline" onClick={onClose} disabled={isSubmitting}>
+                        Cancel
+                    </Button>
                     <Button
                         variant="ghost"
-                        onClick={onClose}
+                        onClick={handleConfirm}
+                        disabled={isSubmitting}
                         className="border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-500/20"
                     >
-                        Delete Project
+                        {isSubmitting ? (
+                            <>
+                                <LoaderCircle className="animate-spin" />
+                                Deleting...
+                            </>
+                        ) : (
+                            "Delete Project"
+                        )}
                     </Button>
                 </DialogFooter>
             </DialogContent>

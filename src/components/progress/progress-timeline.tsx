@@ -1,5 +1,5 @@
 import { MilestoneItem } from "./milestone-item";
-import type { Milestone } from "@/constants/mock-data/project-progress";
+import type { Milestone } from "@/types/progress";
 
 export function ProgressTimeline({ milestones }: { milestones: Milestone[] }) {
     return (

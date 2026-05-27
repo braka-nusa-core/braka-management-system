@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { InvoiceStatus } from "@/constants/mock-data/invoices";
+import type { InvoiceStatus } from "@/types/invoice";
 
 const CONFIG: Record<InvoiceStatus, { label: string; dot: string; className: string }> = {
     draft: { label: "Draft", dot: "bg-[#A1A1AA]", className: "bg-[#18181B] text-[#A1A1AA]" },
@@ -9,11 +9,8 @@ const CONFIG: Record<InvoiceStatus, { label: string; dot: string; className: str
     cancelled: { label: "Cancelled", dot: "bg-[#A1A1AA]", className: "bg-[#18181B] text-[#A1A1AA]" },
 };
 
-// handle legacy "pending" from dashboard mock
-const ALIAS: Record<string, InvoiceStatus> = { pending: "sent" };
-
 export function InvoiceStatusBadge({ status }: { status: string }) {
-    const resolved = (ALIAS[status] ?? status) as InvoiceStatus;
+    const resolved = status as InvoiceStatus;
     const cfg = CONFIG[resolved] ?? CONFIG.draft;
     return (
         <span className={cn("inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium", cfg.className)}>

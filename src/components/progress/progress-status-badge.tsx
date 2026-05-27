@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { ProjectStatus } from "@/constants/mock-data/project-progress";
+import type { ProjectStatus } from "@/types/progress";
 
 const CONFIG: Record<ProjectStatus, { label: string; className: string; dot: string; pulse?: boolean }> = {
     planning: { label: "Planning", dot: "bg-[#A1A1AA]", className: "bg-[#18181B] text-[#A1A1AA] border border-[#A1A1AA]/20" },

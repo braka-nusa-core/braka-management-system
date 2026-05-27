@@ -1,8 +1,8 @@
 import { CheckCircle2, Circle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Milestone, MilestoneStatus } from "@/constants/mock-data/project-progress";
+import type { Milestone } from "@/types/progress";
 
-const STATUS_CONFIG: Record<MilestoneStatus, {
+const STATUS_CONFIG: Record<Milestone["status"], {
     icon: React.ElementType;
     iconCls: string;
     lineCls: string;

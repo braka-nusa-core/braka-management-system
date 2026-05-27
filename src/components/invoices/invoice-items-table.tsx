@@ -1,4 +1,4 @@
-import type { InvoiceItem } from "@/constants/mock-data/invoices";
+import type { InvoiceItem } from "@/types/invoice";
 
 function formatRp(v: number) { return `Rp ${v.toLocaleString("id-ID")}`; }
 

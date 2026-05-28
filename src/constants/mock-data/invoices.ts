@@ -23,6 +23,7 @@ export interface Invoice {
     invoiceDate: string;
     dueDate: string;
     paidDate?: string;
+    paidAt?: string;
     relatedMaintenance?: string;
     items: InvoiceItem[];
     subtotal: number;
@@ -108,6 +109,7 @@ export const INVOICES: Invoice[] = [
         invoiceDate: "2024-12-28",
         dueDate: "2025-01-10",
         paidDate: "2025-01-10",
+        paidAt: "2025-01-10",
         items: [
             { id: "i5", description: "Annual AC Maintenance – Q4 Service Visit", qty: 1, unitPrice: 3_000_000, amount: 3_000_000 },
             { id: "i6", description: "Emergency Call-out Fee", qty: 1, unitPrice: 500_000, amount: 500_000 },

@@ -220,12 +220,19 @@ export function InvoicesTable({
                                                     </Button>
                                                 )}
                                             <Button
+                                                asChild
                                                 variant="ghost"
                                                 size="icon"
                                                 className="h-7 w-7 hover:text-sky-400"
                                                 title="Export PDF"
                                             >
-                                                <FileDown size={14} />
+                                                <Link
+                                                    href={`/invoices/${invoice.id}/print`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    <FileDown size={14} />
+                                                </Link>
                                             </Button>
                                             <Button
                                                 variant="ghost"
@@ -310,9 +317,15 @@ export function InvoicesTable({
                                                 <CheckCircle2 size={13} /> Mark as Paid
                                             </button>
                                         )}
-                                        <button className="flex w-full items-center gap-2 px-3 py-2 text-sm text-sky-400 hover:bg-white/[0.05]">
+                                        <Link
+                                            href={`/invoices/${invoice.id}/print`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="flex w-full items-center gap-2 px-3 py-2 text-sm text-sky-400 hover:bg-white/[0.05]"
+                                            onClick={() => setOpenMenu(null)}
+                                        >
                                             <FileDown size={13} /> Export PDF
-                                        </button>
+                                        </Link>
                                         <button
                                             className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-white/[0.05]"
                                             onClick={() => {

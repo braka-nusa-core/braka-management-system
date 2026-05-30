@@ -18,15 +18,64 @@ import { AppLoader } from "@/components/shared/app-loader";
 import { EmptyState } from "@/components/shared/empty-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
-import {
-    CLIENT_MAINTENANCE,
-    CLIENT_INVOICES,
-    CLIENT_PROJECTS,
+import type {
+    InvoiceHistory,
+    MaintenanceContract as ClientMaintenanceContract,
+    ProjectProgress,
 } from "@/constants/mock-data/clients";
 import { useToastActions } from "@/hooks/use-toast-actions";
 import { useToast } from "@/lib/toast";
-import { deleteClient, getClientById, updateClient } from "@/services";
+import {
+    deleteClient,
+    getClientById,
+    getInvoices,
+    getMaintenanceContracts,
+    getProgressProjects,
+    updateClient,
+} from "@/services";
 import type { CreateClientRequest } from "@/types/client";
+
+function mapContractStatus(
+    status: "active" | "paused" | "expired" | "cancelled"
+): ClientMaintenanceContract["status"] {
+    if (status === "active") {
+        return "active";
+    }
+
+    if (status === "paused") {
+        return "pending";
+    }
+
+    return "expired";
+}
+
+function mapInvoiceStatus(
+    status: "draft" | "sent" | "paid" | "overdue" | "cancelled"
+): InvoiceHistory["status"] {
+    if (status === "paid") {
+        return "paid";
+    }
+
+    if (status === "overdue") {
+        return "overdue";
+    }
+
+    return "pending";
+}
+
+function mapProjectStatus(
+    status: "planning" | "design" | "development" | "revision" | "testing" | "completed"
+): ProjectProgress["status"] {
+    if (status === "completed") {
+        return "completed";
+    }
+
+    if (status === "revision") {
+        return "delayed";
+    }
+
+    return "on_track";
+}
 
 export default function ClientDetailPage() {
     const { id } = useParams<{ id: string }>();
@@ -39,6 +88,64 @@ export default function ClientDetailPage() {
     const { data: client, isLoading, error } = useQuery({
         queryKey: ["client", id],
         queryFn: () => getClientById(id),
+        enabled: Boolean(id),
+    });
+    const { data: contracts = [], isLoading: isContractsLoading } = useQuery({
+        queryKey: ["client", id, "maintenance"],
+        queryFn: async () => {
+            const data = await getMaintenanceContracts();
+
+            return data.contracts
+                .filter((contract) => contract.clientId === id)
+                .map<ClientMaintenanceContract>((contract) => ({
+                    id: contract.id,
+                    title: contract.serviceName,
+                    startDate: contract.startDate,
+                    endDate: contract.nextDueDate,
+                    status: mapContractStatus(contract.status),
+                    value: contract.price,
+                }));
+        },
+        enabled: Boolean(id),
+    });
+    const { data: invoices = [], isLoading: isInvoicesLoading } = useQuery({
+        queryKey: ["client", id, "invoices"],
+        queryFn: async () => {
+            const data = await getInvoices();
+
+            return data.invoices
+                .filter((invoice) => invoice.clientId === id)
+                .map<InvoiceHistory>((invoice) => ({
+                    id: invoice.invoiceNumber,
+                    amount: invoice.total,
+                    status: mapInvoiceStatus(invoice.status),
+                    date: invoice.invoiceDate,
+                }));
+        },
+        enabled: Boolean(id),
+    });
+    const { data: progressData, isLoading: isProjectsLoading } = useQuery({
+        queryKey: ["client", id, "projects"],
+        queryFn: async () => {
+            const data = await getProgressProjects();
+            const clientProjects = data.projects
+                .filter((project) => project.clientId === id)
+                .sort(
+                    (left, right) =>
+                        new Date(right.updatedAt).getTime() -
+                        new Date(left.updatedAt).getTime()
+                );
+
+            return {
+                projects: clientProjects.map<ProjectProgress>((project) => ({
+                    id: project.id,
+                    name: project.projectName,
+                    progress: project.progress,
+                    status: mapProjectStatus(project.status),
+                })),
+                progressToken: clientProjects.find((project) => project.publicToken)?.publicToken,
+            };
+        },
         enabled: Boolean(id),
     });
     const updateClientMutation = useMutation({
@@ -115,9 +222,12 @@ export default function ClientDetailPage() {
         );
     }
 
-    const contracts = CLIENT_MAINTENANCE[client.id] ?? [];
-    const invoices = CLIENT_INVOICES[client.id] ?? [];
-    const projects = CLIENT_PROJECTS[client.id] ?? [];
+    if (isContractsLoading || isInvoicesLoading || isProjectsLoading) {
+        return <AppLoader />;
+    }
+
+    const projects = progressData?.projects ?? [];
+    const progressToken = progressData?.progressToken;
 
     return (
         <DashboardLayout title={client.companyName}>
@@ -155,7 +265,7 @@ export default function ClientDetailPage() {
                     <ClientInfoCard client={client} />
                     <PublicProgressCard
                         clientName={client.companyName}
-                        initialToken={client.progressToken}
+                        initialToken={progressToken}
                     />
                 </div>
 

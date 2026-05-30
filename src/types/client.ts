@@ -31,6 +31,7 @@ export interface ApiClient {
   address: string;
   notes?: string;
   status: ClientStatus;
+  totalProjects?: number;
   createdAt: string;
   updatedAt: string;
 }

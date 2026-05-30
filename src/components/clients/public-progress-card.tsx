@@ -1,21 +1,15 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import {
     Link2, Copy, ExternalLink, RefreshCw,
     CheckCheck, Globe, Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { RegenerateLinkDialog } from "./regenerate-link-dialog";
 import { useToastActions } from "@/hooks/use-toast-actions";
-
-// Generates a mock token — only called on explicit user action
-function generateMockToken(): string {
-    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-    const rand = Array.from({ length: 10 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
-    return `brk_pg_${rand}`;
-}
 
 function buildProgressUrl(token: string): string {
     // In production this would be the real domain; for dev we use localhost
@@ -29,10 +23,11 @@ interface PublicProgressCardProps {
 }
 
 export function PublicProgressCard({ clientName, initialToken }: PublicProgressCardProps) {
-    const [token, setToken] = useState<string | null>(initialToken ?? null);
     const [copied, setCopied] = useState(false);
     const [regenOpen, setRegenOpen] = useState(false);
+    const router = useRouter();
     const t = useToastActions();
+    const token = initialToken ?? null;
 
     const progressUrl = token ? buildProgressUrl(token) : null;
 
@@ -57,18 +52,13 @@ export function PublicProgressCard({ clientName, initialToken }: PublicProgressC
         }
     }, [progressUrl, t]);
 
-    // Generate first token
     function handleGenerate() {
-        const newToken = generateMockToken();
-        setToken(newToken);
-        t.clientSaved(); // reuse success toast
+        router.push("/progress");
     }
 
-    // Regenerate after confirmation
     function handleRegenConfirm() {
-        const newToken = generateMockToken();
-        setToken(newToken);
-        t.clientSaved();
+        setRegenOpen(false);
+        router.push("/progress");
     }
 
     return (

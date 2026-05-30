@@ -16,21 +16,29 @@ function formatDate(d: string) {
 
 export function ClientInfoCard({ client }: { client: Client }) {
     return (
-        <div className="rounded-xl border border-white/[0.06] bg-[#111827] p-6">
-            <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#A3E635]/10 text-lg font-bold text-[#A3E635]">
+        <div className="rounded-xl border border-white/[0.06] bg-[#111827] p-5">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-3 mb-5">
+                <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#A3E635]/10 text-lg font-bold text-[#A3E635]">
                         {client.companyName.charAt(0)}
                     </div>
-                    <div>
-                        <h2 className="text-lg font-semibold text-[#F4F4F5]">{client.companyName}</h2>
-                        <p className="font-mono text-xs text-[#A1A1AA]">{client.id}</p>
+                    <div className="min-w-0">
+                        <h2 className="text-base font-semibold text-[#F4F4F5] leading-snug break-words">
+                            {client.companyName}
+                        </h2>
+                        <p className="font-mono text-[11px] text-[#A1A1AA] mt-0.5 break-all">
+                            {client.id}
+                        </p>
                     </div>
                 </div>
-                <ClientStatusBadge status={client.status} />
+                <div className="shrink-0">
+                    <ClientStatusBadge status={client.status} />
+                </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {/* Info rows — single column to avoid overflow in narrow sidebar */}
+            <div className="space-y-2">
                 {[
                     { icon: User, label: "PIC Name", value: client.picName },
                     { icon: Mail, label: "Email", value: client.email },
@@ -39,20 +47,23 @@ export function ClientInfoCard({ client }: { client: Client }) {
                     { icon: Calendar, label: "Joined", value: formatDate(client.joinedAt) },
                     { icon: FileText, label: "Total Projects", value: String(client.totalProjects) },
                 ].map(({ icon: Icon, label, value }) => (
-                    <div key={label} className="flex items-start gap-3 rounded-lg bg-[#18181B] px-4 py-3">
-                        <Icon size={14} className="mt-0.5 shrink-0 text-[#A1A1AA]" />
-                        <div>
-                            <p className="text-[11px] text-[#A1A1AA]">{label}</p>
-                            <p className="mt-0.5 text-sm text-[#F4F4F5]">{value}</p>
+                    <div
+                        key={label}
+                        className="flex items-start gap-3 rounded-lg bg-[#18181B] px-3 py-2.5"
+                    >
+                        <Icon size={13} className="mt-0.5 shrink-0 text-[#A1A1AA]" />
+                        <div className="min-w-0 flex-1">
+                            <p className="text-[10px] text-[#A1A1AA] leading-none mb-1">{label}</p>
+                            <p className="text-sm text-[#F4F4F5] break-words leading-snug">{value}</p>
                         </div>
                     </div>
                 ))}
             </div>
 
             {client.notes && (
-                <div className="mt-4 rounded-lg border border-white/[0.06] bg-[#18181B] px-4 py-3">
-                    <p className="text-[11px] text-[#A1A1AA]">Notes</p>
-                    <p className="mt-1 text-sm text-[#F4F4F5]">{client.notes}</p>
+                <div className="mt-3 rounded-lg border border-white/[0.06] bg-[#18181B] px-3 py-2.5">
+                    <p className="text-[10px] text-[#A1A1AA] mb-1">Notes</p>
+                    <p className="text-sm text-[#F4F4F5] break-words leading-snug">{client.notes}</p>
                 </div>
             )}
         </div>
@@ -76,19 +87,21 @@ export function MaintenanceContractsCard({ contracts }: { contracts: Maintenance
             ) : (
                 <div className="space-y-2">
                     {contracts.map((c) => (
-                        <div key={c.id} className="flex items-center justify-between rounded-lg bg-[#18181B] px-4 py-3">
-                            <div>
-                                <p className="text-sm font-medium text-[#F4F4F5]">{c.title}</p>
-                                <p className="mt-0.5 font-mono text-xs text-[#A1A1AA]">
-                                    {c.id} · {formatDate(c.startDate)} – {formatDate(c.endDate)}
+                        <div key={c.id} className="rounded-lg bg-[#18181B] px-4 py-3">
+                            <div className="flex items-start justify-between gap-3">
+                                <p className="text-sm font-medium text-[#F4F4F5] leading-snug min-w-0 break-words">
+                                    {c.title}
                                 </p>
+                                <div className="shrink-0 text-right">
+                                    <p className="text-sm font-semibold text-[#F4F4F5]">{formatRp(c.value)}</p>
+                                    <span className={cn("mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium capitalize", CONTRACT_STATUS[c.status])}>
+                                        {c.status}
+                                    </span>
+                                </div>
                             </div>
-                            <div className="text-right ml-4 shrink-0">
-                                <p className="text-sm font-semibold text-[#F4F4F5]">{formatRp(c.value)}</p>
-                                <span className={cn("mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium capitalize", CONTRACT_STATUS[c.status])}>
-                                    {c.status}
-                                </span>
-                            </div>
+                            <p className="mt-1.5 font-mono text-[11px] text-[#A1A1AA] break-all">
+                                {c.id} · {formatDate(c.startDate)} – {formatDate(c.endDate)}
+                            </p>
                         </div>
                     ))}
                 </div>
@@ -114,12 +127,12 @@ export function InvoiceHistoryCard({ invoices }: { invoices: InvoiceHistory[] })
             ) : (
                 <div className="space-y-2">
                     {invoices.map((inv) => (
-                        <div key={inv.id} className="flex items-center justify-between rounded-lg bg-[#18181B] px-4 py-3">
-                            <div>
-                                <p className="font-mono text-sm font-medium text-[#F4F4F5]">{inv.id}</p>
+                        <div key={inv.id} className="flex items-center justify-between gap-3 rounded-lg bg-[#18181B] px-4 py-3">
+                            <div className="min-w-0">
+                                <p className="font-mono text-sm font-medium text-[#F4F4F5] truncate">{inv.id}</p>
                                 <p className="mt-0.5 text-xs text-[#A1A1AA]">{formatDate(inv.date)}</p>
                             </div>
-                            <div className="text-right">
+                            <div className="shrink-0 text-right">
                                 <p className="text-sm font-semibold text-[#F4F4F5]">{formatRp(inv.amount)}</p>
                                 <span className={cn("mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium capitalize", INV_STATUS[inv.status])}>
                                     {inv.status}
@@ -153,10 +166,14 @@ export function ProjectProgressCard({ projects }: { projects: ProjectProgress[] 
                         const cfg = PROJ_STATUS[p.status];
                         return (
                             <div key={p.id}>
-                                <div className="mb-1.5 flex items-center justify-between">
-                                    <p className="text-sm font-medium text-[#F4F4F5]">{p.name}</p>
-                                    <div className="flex items-center gap-2">
-                                        <span className={cn("text-xs font-medium", cfg.text)}>{cfg.label}</span>
+                                <div className="mb-2 flex items-start justify-between gap-2">
+                                    <p className="text-sm font-medium text-[#F4F4F5] leading-snug min-w-0 break-words">
+                                        {p.name}
+                                    </p>
+                                    <div className="shrink-0 flex items-center gap-1.5 text-right">
+                                        <span className={cn("text-xs font-medium whitespace-nowrap", cfg.text)}>
+                                            {cfg.label}
+                                        </span>
                                         <span className="text-xs text-[#A1A1AA]">{p.progress}%</span>
                                     </div>
                                 </div>

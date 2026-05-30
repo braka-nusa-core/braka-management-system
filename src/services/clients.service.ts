@@ -19,7 +19,7 @@ function mapClient(client: ApiClient): Client {
     phone: client.phone,
     address: client.address,
     status: client.status,
-    totalProjects: 0,
+    totalProjects: client.totalProjects ?? 0,
     notes: client.notes,
     joinedAt: client.createdAt,
     updatedAt: client.updatedAt,

@@ -19,6 +19,17 @@ export const metadata: Metadata = {
     template: "%s | Braka",
   },
   description: "Braka Management Dashboard – Maintenance, Clients & Invoices",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+      "max-image-preview": "none",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default function RootLayout({

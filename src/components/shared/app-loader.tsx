@@ -1,10 +1,16 @@
+import Image from "next/image";
+import brakaLogo from "@/assets/braka-nusa-core-logo.png";
+
 export function AppLoader() {
     return (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#09090B]">
             <div className="flex items-center gap-3 mb-8">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#A3E635]">
-                    <span className="text-xl font-black text-[#09090B]">B</span>
-                </div>
+                <Image
+                    src={brakaLogo}
+                    alt="Braka logo"
+                    className="h-10 w-auto"
+                    priority
+                />
                 <span className="text-lg font-bold text-[#F4F4F5]">Braka</span>
             </div>
 

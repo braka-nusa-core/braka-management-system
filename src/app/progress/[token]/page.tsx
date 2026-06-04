@@ -2,9 +2,11 @@
 
 import { MessageSquare } from "lucide-react";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { ProgressHeader } from "@/components/progress/progress-header";
 import { ProgressTimeline } from "@/components/progress/progress-timeline";
+import brakaLogo from "@/assets/braka-nusa-core-logo.png";
 import { getPublicProgressByToken } from "@/services";
 
 export default function ProjectProgressPage() {
@@ -27,9 +29,12 @@ export default function ProjectProgressPage() {
     if (error || !project) {
         return (
             <div className="flex min-h-screen flex-col items-center justify-center bg-[#09090B] px-4 text-center">
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-[#A3E635] shadow-[0_0_20px_rgba(163,230,53,0.3)]">
-                    <span className="text-xl font-black text-[#09090B]">B</span>
-                </div>
+                <Image
+                    src={brakaLogo}
+                    alt="Braka logo"
+                    className="mb-6 h-12 w-auto"
+                    priority
+                />
                 <h1 className="text-xl font-bold text-white">Project Not Found</h1>
                 <p className="mt-2 max-w-sm text-sm text-white/40">
                     This progress link is invalid or has expired. Please contact your project manager for a new link.
@@ -84,10 +89,12 @@ export default function ProjectProgressPage() {
                 <div className="mt-20 border-t border-white/[0.05] pt-8">
                     <div className="flex flex-col items-center gap-2 text-center">
                         <div className="flex items-center gap-2">
-                            <div className="flex h-5 w-5 items-center justify-center rounded-md bg-[#A3E635]">
-                                <span className="text-[9px] font-black text-[#09090B]">B</span>
-                            </div>
-                            <span className="text-xs font-semibold text-white/30">Braka</span>
+                            <Image
+                                src={brakaLogo}
+                                alt="Braka logo"
+                                className="h-8 w-auto"
+                            />
+                            <span>Braka Nusa Core</span>
                         </div>
                         <p className="text-[11px] text-white/15">
                             Professional Maintenance & Engineering Services

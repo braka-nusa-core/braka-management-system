@@ -1,11 +1,13 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { LoaderCircle, ShieldCheck } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/auth/auth-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import brakaLogo from "@/assets/braka-nusa-core-logo.png";
 import { useToast } from "@/lib/toast";
 
 export default function LoginPage() {
@@ -51,18 +53,14 @@ export default function LoginPage() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(163,230,53,0.18),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(34,197,94,0.12),transparent_28%)]" />
       <div className="relative w-full max-w-md rounded-[28px] border border-white/[0.08] bg-[#111827]/95 p-7 shadow-[0_30px_80px_rgba(0,0,0,0.45)] backdrop-blur">
         <div className="mb-8">
-          <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#A3E635] shadow-[0_0_24px_rgba(163,230,53,0.28)]">
-            <span className="text-lg font-black text-[#09090B]">B</span>
-          </div>
+          <Image
+            src={brakaLogo}
+            alt="Braka logo"
+            className="mb-4 h-12 w-auto"
+            priority
+          />
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#A3E635]/70">
             Braka Dashboard
-          </p>
-          <h1 className="mt-3 text-2xl font-bold text-[#F4F4F5]">
-            Login to your admin workspace
-          </h1>
-          <p className="mt-2 text-sm leading-relaxed text-[#A1A1AA]">
-            We will call `POST /auth/login`, store the bearer token, then fetch your
-            profile from `GET /auth/me`.
           </p>
         </div>
 
@@ -96,7 +94,6 @@ export default function LoginPage() {
               </>
             ) : (
               <>
-                <ShieldCheck />
                 Sign in
               </>
             )}

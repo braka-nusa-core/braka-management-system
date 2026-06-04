@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Building2, FileText, Bell, Palette, Save } from "lucide-react";
+import Image from "next/image";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { PageHeader } from "@/components/shared/page-header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import brakaLogo from "@/assets/braka-nusa-core-logo.png";
 import { useToastActions } from "@/hooks/use-toast-actions";
 
 type SettingsTab = "agency" | "invoice" | "notifications" | "branding";
@@ -218,9 +220,12 @@ export default function SettingsPage() {
               <SettingsCard title="Brand Preview" description="Preview how your agency appears on client documents.">
                 <div className="rounded-xl border border-white/[0.06] bg-[#09090B] p-6">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#A3E635]">
-                      <span className="text-lg font-black text-[#09090B]">B</span>
-                    </div>
+                    <Image
+                      src={brakaLogo}
+                      alt="Braka logo"
+                      className="h-10 w-auto"
+                      priority
+                    />
                     <div>
                       <p className="font-bold text-[#F4F4F5]">PT Braka Solusi Teknik</p>
                       <p className="text-xs text-[#A1A1AA]">Professional Maintenance & Engineering Services</p>

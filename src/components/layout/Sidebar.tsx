@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, APP_NAME } from "@/constants/navigation";
+import brakaLogo from "@/assets/braka-nusa-core-logo.png";
 import { getNotifications } from "@/services";
 
 const ICON_MAP = {
@@ -53,9 +55,12 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         {/* Logo */}
         <div className="flex h-[60px] shrink-0 items-center justify-between border-b border-white/[0.06] px-5">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#A3E635]">
-              <span className="text-[11px] font-black text-[#09090B]">B</span>
-            </div>
+            <Image
+              src={brakaLogo}
+              alt="Braka logo"
+              className="h-7 w-auto"
+              priority
+            />
             <span className="text-[15px] font-semibold tracking-tight text-[#F4F4F5]">
               {APP_NAME}
             </span>

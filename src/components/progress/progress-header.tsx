@@ -1,7 +1,9 @@
+import Image from "next/image";
 import { Calendar, User, ExternalLink } from "lucide-react";
 import { ProgressStatusBadge } from "./progress-status-badge";
 import { ProgressBar } from "./progress-bar";
 import type { PublicProgressProject } from "@/types/progress";
+import brakaLogo from "@/assets/braka-nusa-core-logo.png";
 
 function formatDate(d: string) {
     return new Date(d).toLocaleDateString("en-GB", {
@@ -15,13 +17,13 @@ export function ProgressHeader({ project }: { project: PublicProgressProject }) 
     return (
         <div className="space-y-8">
             <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#A3E635] shadow-[0_0_16px_rgba(163,230,53,0.3)]">
-                        <span className="text-sm font-black text-[#09090B]">B</span>
-                    </div>
-                    <span className="tracking-tight text-sm font-bold text-white/50">
-                        Braka
-                    </span>
+                <div className="flex items-center">
+                    <Image
+                        src={brakaLogo}
+                        alt="Braka logo"
+                        className="h-8 w-auto"
+                        priority
+                    />
                 </div>
                 <span className="text-[11px] font-medium uppercase tracking-widest text-white/20">
                     Project Status
@@ -59,7 +61,7 @@ export function ProgressHeader({ project }: { project: PublicProgressProject }) 
                         Last updated: {formatDate(project.lastUpdated)}
                     </p>
                     <div className="flex items-center gap-1 text-xs text-white/20">
-                        <ExternalLink size={10} /> braka.co.id
+                        <ExternalLink size={10} /> brakanusacore.com
                     </div>
                 </div>
             </div>

@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Home, ArrowLeft } from "lucide-react";
+import brakaLogo from "@/assets/braka-nusa-core-logo.png";
 
 export default function NotFound() {
     return (
@@ -11,9 +13,12 @@ export default function NotFound() {
 
             <div className="page-enter relative text-center">
                 <div className="mb-8 flex items-center justify-center gap-2.5">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#A3E635] shadow-[0_0_20px_rgba(163,230,53,0.3)]">
-                        <span className="text-lg font-black text-[#09090B]">B</span>
-                    </div>
+                    <Image
+                        src={brakaLogo}
+                        alt="Braka logo"
+                        className="h-9 w-auto"
+                        priority
+                    />
                     <span className="text-base font-semibold text-[#F4F4F5]">Braka</span>
                 </div>
 
